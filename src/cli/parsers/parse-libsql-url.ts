@@ -1,20 +1,30 @@
 import { checkIfFileExists } from './parse-output-arg.js'
 
-export async function parseLibSqlUrl(url: string): Promise<string> {
-  if (url.startsWith('file:')) {
-    const path = url.replace('file:', '')
-    const filePath = await checkIfFileExists(url)
+type RemoteLibSqlUrl = `libsql://${string}`
 
-    if (!filePath) {
-      new Error(`File not found" ${path}"`)
-    }
+function isRemoteLibSqlUrl(url: string): url is RemoteLibSqlUrl {
+  return url.startsWith('libsql://')
+}
 
-    return url
-  } else if (url.startsWith('libsql://')) {
+type LocalLibSqlUrl = `file:${string}`
+
+function isLocalLibSqlUrl(url: string): url is LocalLibSqlUrl {
+  return url.startsWith('file:')
+}
+
+export type LibSqlUrl = LocalLibSqlUrl | RemoteLibSqlUrl
+
+export async function parseLibSqlUrl(url: string): Promise<LibSqlUrl> {
+  if (isRemoteLibSqlUrl(url)) {
     return url
   }
 
-  throw new Error(
-    `Invalid URL, must either start with 'file:' to open a local sqlite db or 'libsql://' to open a remote database`,
-  )
+  const path = isLocalLibSqlUrl(url) ? url.replace('file:', '') : url
+
+  const fileExists = await checkIfFileExists(path)
+  if (!fileExists) {
+    throw new Error(`File not found "${path}"`)
+  }
+
+  return isLocalLibSqlUrl(url) ? url : `file:${url}`
 }
