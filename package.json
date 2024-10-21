@@ -14,8 +14,8 @@
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
-    "__erd-generator_bash_complete": "dist/cli/bash-complete.js",
-    "erd-generator": "dist/cli/cli.js"
+    "__erd-generator_bash_complete": "./dist/cli/bash-complete.js",
+    "erd-generator": "./dist/cli/bin.js"
   },
   "files": [
     "dist/",
