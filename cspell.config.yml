@@ -1,0 +1,35 @@
+$schema: https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json
+dictionaries:
+  - typescript
+ignorePaths:
+  - .git
+  - .github
+  - .gitignore
+  - .release-it.json
+  - .vscode
+  - CHANGELOG.md
+  - coverage
+  - dist
+  - node_modules
+  - pnpm-lock.yaml
+version: '0.2'
+words:
+  - AUTOINCREMENT
+  - DFLT
+  - Introspector
+  - Luca
+  - arktype
+  - hashbang
+  - ianvs
+  - introspectors
+  - knip
+  - kysely
+  - lcov
+  - libsql
+  - lucaschultz
+  - notnull
+  - packagejson
+  - preinstall
+  - stricli
+  - tseslint
+  - tsup

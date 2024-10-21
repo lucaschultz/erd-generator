@@ -1,6 +1,6 @@
 {
-	"$schema": "https://unpkg.com/knip@latest/schema.json",
-	"entry": ["src/index.ts!"],
-	"ignoreExportsUsedInFile": { "interface": true, "type": true },
-	"project": ["src/**/*.ts!"]
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "entry": ["src/index.ts!", "src/cli/bin.ts", "src/cli/bash-complete.ts"],
+  "ignoreBinaries": ["only-allow"],
+  "project": ["src/**/*.ts!"]
 }

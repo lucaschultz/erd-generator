@@ -1,11 +1,11 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from 'tsup'
 
 export default defineConfig({
-	bundle: false,
-	clean: true,
-	dts: true,
-	entry: ["src/**/*.ts", "!src/**/*.test.*"],
-	format: "esm",
-	outDir: "lib",
-	sourcemap: true,
-});
+  clean: true,
+  dts: true,
+  entry: ['src/cli/bin.ts', 'src/cli/bash-complete.ts', 'src/index.ts'],
+  format: ['esm'],
+  minify: true,
+  splitting: true,
+  tsconfig: './tsconfig.json',
+})
