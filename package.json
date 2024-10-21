@@ -9,8 +9,14 @@
   "license": "MIT",
   "author": {
     "name": "Luca Schultz",
-    "email": "luca.schultz@icloud.com"
+    "url": "https://github.com/lucaschultz"
   },
+  "contributors": [
+    {
+      "name": "Luca Schultz",
+      "url": "https://github.com/lucaschultz"
+    }
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
@@ -25,7 +31,7 @@
   ],
   "scripts": {
     "build": "tsup",
-    "ci": "pnpm run tsc && pnpm run test && pnpm run lint:fix && pnpm run lint:knip && pnpm run lint:md && pnpm run lint:spelling && pnpm run format:check",
+    "ci": "pnpm run lint:fix && pnpm run lint:knip && pnpm run lint:md && pnpm run lint:packages && pnpm run lint:spelling && pnpm run format && pnpm run tsc && pnpm run test",
     "format": "prettier --list-different --write .",
     "format:check": "prettier --check .",
     "lint": "eslint . --max-warnings 0",
