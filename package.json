@@ -33,7 +33,6 @@
     "lint:md": "markdownlint \"**/*.md\" \".github/**/*.md\" --rules sentences-per-line",
     "lint:packages": "pnpm dedupe --check",
     "lint:spelling": "cspell \"**\" \".github/**/*\" --gitignore --dot --no-progress --cache --unique",
-    "postinstall": "npx @stricli/auto-complete@latest install erd-generator __erd-generator_bash_complete",
     "prebuild": "pnpm run tsc",
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky",
