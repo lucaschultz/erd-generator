@@ -22,9 +22,9 @@ npm i erd-generator
 ```
 
 ```ts
-import { greet } from "erd-generator";
+import { greet } from 'erd-generator'
 
-greet("Hello, world! 💖");
+greet('Hello, world! 💖')
 ```
 
 ## Contributors
