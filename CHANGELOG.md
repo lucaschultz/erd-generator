@@ -1,3 +1,9 @@
+# [0.2.0](https://github.com/lucaschultz/erd-generator/compare/0.1.1...0.2.0) (2024-10-21)
+
+### Features
+
+- overhaul cli command structure ([#2](https://github.com/lucaschultz/erd-generator/issues/2)) ([9d4dc29](https://github.com/lucaschultz/erd-generator/commit/9d4dc29b163827a9af11e7ea2c42510ab2db7e92))
+
 ## [0.1.1](https://github.com/lucaschultz/erd-generator/compare/0.1.0...0.1.1) (2024-10-21)
 
 ### Bug Fixes
