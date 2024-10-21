@@ -5,19 +5,22 @@ import { writeFile } from 'fs/promises'
 import type { AppContext } from '../app-context.js'
 
 import { generateD2FromLibsql } from '../../internal/generate-d2-from-libsql.js'
-import { parseLibSqlUrl } from '../parsers/parse-libsql-url.js'
+import { LibSqlUrl, parseLibSqlUrl } from '../parsers/parse-libsql-url.js'
 import { parseOutputArg } from '../parsers/parse-output-arg.js'
 
 interface LibSqlCommandFlags {
   readonly authToken?: string
   readonly encryptionKey?: string
+  readonly excludeTable?: string[]
+  readonly format: 'd2'
+  readonly generatedTables: boolean
   readonly output?: string
 }
 
 async function runLibSqlCommand(
   this: AppContext,
   flags: LibSqlCommandFlags,
-  url: string,
+  url: LibSqlUrl,
 ): Promise<void> {
   const client = createClient({
     authToken: flags.authToken,
@@ -25,7 +28,10 @@ async function runLibSqlCommand(
     url,
   })
 
-  const diagram = await generateD2FromLibsql(client)
+  const diagram = await generateD2FromLibsql(client, {
+    excludeTables: flags.excludeTable,
+    includeDefaultExcludedTables: flags.generatedTables,
+  })
 
   if (flags.output) {
     await writeFile(flags.output, diagram)
@@ -37,31 +43,63 @@ async function runLibSqlCommand(
 
 export const LibSqlCommand = buildCommand({
   docs: {
-    brief: 'Generate an D2 ERD from a SQLite or libSQL database',
+    brief: 'Generate an ERD from a SQLite or libSQL database',
+    customUsage: [
+      'libsql diagram.d2 -k "1secret!password" ./encrypted.db',
+      'libsql -a eyJ…UBw -o libsql://mydb-myorg.turso.io',
+      'libsql -f d2 ./mydb.sqlite',
+    ],
   },
   func: runLibSqlCommand,
   parameters: {
+    aliases: {
+      a: 'authToken',
+      e: 'excludeTable',
+      f: 'format',
+      g: 'generatedTables',
+      k: 'encryptionKey',
+      o: 'output',
+    },
     flags: {
       authToken: {
-        brief: 'Authentication token to connect to remote database',
+        brief: 'Authentication token to connect to a remote database',
         kind: 'parsed',
         optional: true,
         parse: String,
-        placeholder: 'eyJh...jUBw',
+        placeholder: 'token',
       },
       encryptionKey: {
-        brief: 'Key to decrypt an encrypted database',
+        brief: 'Key to decrypt an encrypted local database',
         kind: 'parsed',
         optional: true,
         parse: String,
-        placeholder: 'super-secret-password',
+        placeholder: 'key',
+      },
+      excludeTable: {
+        brief: 'Tables to exclude from the diagram',
+        kind: 'parsed',
+        optional: true,
+        parse: String,
+        variadic: true,
+      },
+      format: {
+        brief: 'Format of the diagram',
+        default: 'd2',
+        kind: 'enum',
+        placeholder: 'format',
+        values: ['d2'],
+      },
+      generatedTables: {
+        brief: "Include generated tables (e.g. migration tables from ORM's)",
+        default: false,
+        kind: 'boolean',
       },
       output: {
-        brief: 'Output file',
+        brief: 'Path to an output file (otherwise output is written to stdout)',
         kind: 'parsed',
         optional: true,
         parse: parseOutputArg,
-        placeholder: 'output.d2',
+        placeholder: 'path',
       },
     },
     positional: {
@@ -70,7 +108,7 @@ export const LibSqlCommand = buildCommand({
         {
           brief: 'Url of the database',
           parse: parseLibSqlUrl,
-          placeholder: 'file:local.db',
+          placeholder: 'url',
         },
       ],
     },

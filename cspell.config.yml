@@ -27,9 +27,12 @@ words:
   - lcov
   - libsql
   - lucaschultz
+  - mydb
+  - myorg
   - notnull
   - packagejson
   - preinstall
   - stricli
   - tseslint
   - tsup
+  - turso
