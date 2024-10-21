@@ -9,8 +9,14 @@
   "license": "MIT",
   "author": {
     "name": "Luca Schultz",
-    "email": "luca.schultz@icloud.com"
+    "url": "https://github.com/lucaschultz"
   },
+  "contributors": [
+    {
+      "name": "Luca Schultz",
+      "url": "https://github.com/lucaschultz"
+    }
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
