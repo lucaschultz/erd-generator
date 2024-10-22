@@ -1,3 +1,9 @@
+# [0.3.0](https://github.com/lucaschultz/erd-generator/compare/0.2.0...0.3.0) (2024-10-22)
+
+### Features
+
+- add PostgreSQL support ([#5](https://github.com/lucaschultz/erd-generator/issues/5)) ([5e00a3a](https://github.com/lucaschultz/erd-generator/commit/5e00a3ade31c539db41670f3e5fded9e14306b90))
+
 # [0.2.0](https://github.com/lucaschultz/erd-generator/compare/0.1.1...0.2.0) (2024-10-21)
 
 ### Features
