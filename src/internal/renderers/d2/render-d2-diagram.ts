@@ -1,6 +1,6 @@
 import { Eta } from 'eta'
 
-import type { Table } from '../../types/table.js'
+import type { Table } from '../../table.js'
 
 import { escapeTablesD2 } from './escape-tables-d2.js'
 
@@ -20,7 +20,7 @@ const template = `
   ].filter(Boolean).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).join('; ') %>] }
 <% }) %>
 }
-<% table.relations.forEach(function(relations) { %>
+<% table.relations.sort((a, b) => a.columnName.localeCompare(b.columnName)).forEach(function(relations) { %>
 
 <%= relations.tableName %>.<%= relations.columnName %> -> <%= relations.foreignTableName %>.<%= relations.foreignColumnName %>
 

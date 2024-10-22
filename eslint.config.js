@@ -142,4 +142,11 @@ export default tseslint.config(
       ],
     },
   },
+  {
+    // Disable unbound-method rule for test files because we need to pass mock functions to vitest.
+    files: ['**/*.test.{ts,js,tsx,jsx}'],
+    rules: {
+      '@typescript-eslint/unbound-method': 'off',
+    },
+  },
 )
