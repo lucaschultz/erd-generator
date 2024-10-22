@@ -1,5 +1,5 @@
-import type { DatabaseIntrospector } from './database-introspector.js'
+import type { AnyDatabaseIntrospector } from './database-introspector.js'
 
-export type DiagramGenerator<T> = (
-  ...params: Parameters<DatabaseIntrospector<T>>
+export type DiagramGenerator<T extends AnyDatabaseIntrospector> = (
+  ...params: Parameters<T>
 ) => Promise<string> | string
