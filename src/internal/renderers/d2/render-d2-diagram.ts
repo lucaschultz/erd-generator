@@ -20,7 +20,7 @@ const template = `
   ].filter(Boolean).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).join('; ') %>] }
 <% }) %>
 }
-<% table.relations.forEach(function(relations) { %>
+<% table.relations.sort((a, b) => a.columnName.localeCompare(b.columnName)).forEach(function(relations) { %>
 
 <%= relations.tableName %>.<%= relations.columnName %> -> <%= relations.foreignTableName %>.<%= relations.foreignColumnName %>
 

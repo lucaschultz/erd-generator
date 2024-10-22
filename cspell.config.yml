@@ -29,8 +29,10 @@ words:
   - lucaschultz
   - mydb
   - myorg
+  - nextval
   - notnull
   - packagejson
+  - pglite
   - preinstall
   - stricli
   - tseslint

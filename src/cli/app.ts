@@ -2,6 +2,7 @@ import { buildApplication, buildRouteMap } from '@stricli/core'
 
 import { version } from '../../package.json'
 import { LibSqlCommand } from './commands/libsql-command.js'
+import { PostgresCommand } from './commands/postgres-command.js'
 
 const routeMap = buildRouteMap({
   docs: {
@@ -9,6 +10,7 @@ const routeMap = buildRouteMap({
   },
   routes: {
     libsql: LibSqlCommand,
+    postgres: PostgresCommand,
     sqlite: LibSqlCommand,
   },
 })
