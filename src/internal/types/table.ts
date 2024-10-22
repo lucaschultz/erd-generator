@@ -8,21 +8,22 @@ interface Relation {
 }
 
 interface Column {
+  columnName: string
   dataType: string
-  defaultValue: string | undefined
+  defaultValue: null | string
   hasDefaultValue: boolean
   isAutoIncrementing: boolean
   isForeignKey: boolean
   isNullable: boolean
   isPrimaryKey: boolean
   isUnique: boolean
-  name: string
+  tableName: string
 }
 
 export interface Table {
   columns: Column[]
   isView: boolean
-  name: string
-  primaryKey: string | undefined
+  primaryKey: null | string | string[]
   relations: Relation[]
+  tableName: string
 }

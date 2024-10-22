@@ -187,17 +187,17 @@ async function getTableMetadata(client: LibSqlClient, tableName: string) {
 
   return {
     columns: columns.map((col) => ({
+      columnName: col.name,
       dataType: col.type,
-      defaultValue:
-        typeof col.dflt_value === 'string' ? col.dflt_value : undefined,
+      defaultValue: typeof col.dflt_value === 'string' ? col.dflt_value : null,
       hasDefaultValue: col.dflt_value != null,
       isAutoIncrementing: col.name === autoIncrementCol,
       isNullable: col.notnull === 0 ? true : false,
       isPrimaryKey: col.pk === 1 ? true : false,
-      name: col.name,
+      tableName,
     })),
     isView: tableDefinition.type === 'view',
-    name: tableName,
+    tableName,
   }
 }
 
@@ -229,10 +229,14 @@ export const introspectLibsql: DatabaseIntrospector<LibSqlClient> = async (
       return {
         ...column,
         isForeignKey: relations.some(
-          (r) => r.tableName === table.name && r.columnName === column.name,
+          (r) =>
+            r.tableName === table.tableName &&
+            r.columnName === column.columnName,
         ),
         isUnique: uniqueColumns.some(
-          (c) => c.tableName === table.name && c.columnName === column.name,
+          (c) =>
+            c.tableName === table.tableName &&
+            c.columnName === column.columnName,
         ),
       }
     })
@@ -240,9 +244,10 @@ export const introspectLibsql: DatabaseIntrospector<LibSqlClient> = async (
     return {
       ...table,
       columns,
-      primaryKey: primaryKeys.find((pk) => pk.tableName === table.name)
-        ?.columnName,
-      relations: relations.filter((r) => r.tableName === table.name),
+      primaryKey:
+        primaryKeys.find((pk) => pk.tableName === table.tableName)
+          ?.columnName ?? null,
+      relations: relations.filter((r) => r.tableName === table.tableName),
     }
   })
 
