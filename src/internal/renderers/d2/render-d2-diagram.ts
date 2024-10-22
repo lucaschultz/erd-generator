@@ -1,6 +1,6 @@
 import { Eta } from 'eta'
 
-import type { Table } from '../../types/table.js'
+import type { Table } from '../../table.js'
 
 import { escapeTablesD2 } from './escape-tables-d2.js'
 

@@ -1,4 +1,4 @@
-import type { Table } from '../../types/table.js'
+import type { Table } from '../../table.js'
 
 const keywords = ['label']
 

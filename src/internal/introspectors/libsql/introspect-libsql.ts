@@ -2,8 +2,8 @@ import type { Client as LibSqlClient } from '@libsql/client'
 
 import { type } from 'arktype'
 
+import type { Table } from '../../table.js'
 import type { DatabaseIntrospector } from '../../types/database-introspector.js'
-import type { Table } from '../../types/table.js'
 
 import { DEFAULT_EXCLUDED_TABLES } from '../../default-excluded-tables.js'
 import { executeQuery, result } from './execute-query.js'

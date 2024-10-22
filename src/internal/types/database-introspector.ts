@@ -1,4 +1,4 @@
-import type { Table } from './table.js'
+import type { Table } from '../table.js'
 
 export interface IntrospectorOptions {
   excludeTables: string[]
