@@ -5,7 +5,7 @@ import { writeFile } from 'fs/promises'
 import type { AppContext } from '../app-context.js'
 
 import { generateD2FromLibsql } from '../../internal/generate-d2-from-libsql.js'
-import { LibSqlUrl, parseLibSqlUrl } from '../parsers/parse-libsql-url.js'
+import { LibSqlUri, parseLibSqlUri } from '../parsers/parse-libsql-uri.js'
 import { parseOutputArg } from '../parsers/parse-output-arg.js'
 
 interface LibSqlCommandFlags {
@@ -20,7 +20,7 @@ interface LibSqlCommandFlags {
 async function runLibSqlCommand(
   this: AppContext,
   flags: LibSqlCommandFlags,
-  url: LibSqlUrl,
+  url: LibSqlUri,
 ): Promise<void> {
   const client = createClient({
     authToken: flags.authToken,
@@ -106,8 +106,8 @@ export const LibSqlCommand = buildCommand({
       kind: 'tuple',
       parameters: [
         {
-          parse: parseLibSqlUrl,
           brief: 'libSQL connection URI or SQLite file path',
+          parse: parseLibSqlUri,
           placeholder: 'url',
         },
       ],

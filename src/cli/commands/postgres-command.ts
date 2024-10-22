@@ -6,7 +6,7 @@ import type { AppContext } from '../app-context.js'
 
 import { generateD2FromPostgres } from '../../internal/generate-d2-from-postgres.js'
 import { parseOutputArg } from '../parsers/parse-output-arg.js'
-import { parsePostgresUrl } from '../parsers/parse-postgres-url.js'
+import { parsePostgresUri } from '../parsers/parse-postgres-uri.js'
 
 interface PostgresCommandFlags {
   readonly excludeTable?: string[]

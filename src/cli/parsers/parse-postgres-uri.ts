@@ -3,7 +3,7 @@
 // @see https://github.com/brianc/node-postgres/tree/master/packages/pg-connection-string
 // @see https://github.com/brianc/node-postgres/pull/3128
 
-export function parsePostgresUrl(url: string): URL {
+export function parsePostgresUri(url: string): URL {
   const parsed = new URL(url)
 
   if (parsed.protocol !== 'postgres:') {
