@@ -1,11 +1,11 @@
 import type { Table } from '../table.js'
 
-export interface IntrospectorOptions {
+export type IntrospectorOptions = Partial<{
   excludeTables: string[]
   includeDefaultExcludedTables: boolean
-}
+}>
 
 export type DatabaseIntrospector<T> = (
   dbClient: T,
-  options?: Partial<IntrospectorOptions>,
+  options?: IntrospectorOptions,
 ) => Promise<Table[]> | Table[]

@@ -5,7 +5,7 @@ import { type } from 'arktype'
 import type { Table } from '../../table.js'
 import type { DatabaseIntrospector } from '../../types/database-introspector.js'
 
-import { DEFAULT_EXCLUDED_TABLES } from '../../default-excluded-tables.js'
+import { getExcludeTables } from '../shared/get-exclude-tables.js'
 import { executeQuery, result } from './execute-query.js'
 
 const uniqueColumnsResult = result(
@@ -205,15 +205,7 @@ export const introspectLibsql: DatabaseIntrospector<LibSqlClient> = async (
   client,
   options,
 ) => {
-  const excludeTables = []
-
-  if (options?.excludeTables) {
-    excludeTables.push(...options.excludeTables)
-  }
-
-  if (options?.includeDefaultExcludedTables !== true) {
-    excludeTables.push(...DEFAULT_EXCLUDED_TABLES)
-  }
+  const excludeTables = getExcludeTables(options)
 
   const tableNames = await getTableNames(client, excludeTables)
   const relations = await getRelations(client)
