@@ -45,9 +45,9 @@ export const LibSqlCommand = buildCommand({
   docs: {
     brief: 'Generate an ERD from a SQLite or libSQL database',
     customUsage: [
-      'libsql diagram.d2 -k "1secret!password" ./encrypted.db',
-      'libsql -a eyJ…UBw -o libsql://mydb-myorg.turso.io',
-      'libsql -f d2 ./mydb.sqlite',
+      '-o diagram.d2 -k "1secret!password" ./encrypted.db',
+      '-a eyJ…UBw -o libsql://mydb-myorg.turso.io',
+      '-f d2 ./mydb.sqlite',
     ],
   },
   func: runLibSqlCommand,
@@ -106,8 +106,8 @@ export const LibSqlCommand = buildCommand({
       kind: 'tuple',
       parameters: [
         {
-          brief: 'Url of the database',
           parse: parseLibSqlUrl,
+          brief: 'libSQL connection URI or SQLite file path',
           placeholder: 'url',
         },
       ],

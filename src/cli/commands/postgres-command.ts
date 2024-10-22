@@ -89,7 +89,7 @@ export const PostgresCommand = buildCommand({
         {
           brief:
             'PostgreSQL Connection URI (https://postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING-URIS)',
-          parse: parsePostgresUrl,
+          parse: parsePostgresUri,
           placeholder: 'url',
         },
       ],
