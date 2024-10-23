@@ -1,3 +1,9 @@
+# [0.4.0](https://github.com/lucaschultz/erd-generator/compare/0.3.0...0.4.0) (2024-10-23)
+
+### Features
+
+- add `—force` flag to overwrite output files ([602e599](https://github.com/lucaschultz/erd-generator/commit/602e599af6ccab75baf00d9a55efc1a7c8ad91cf))
+
 # [0.3.0](https://github.com/lucaschultz/erd-generator/compare/0.2.0...0.3.0) (2024-10-22)
 
 ### Features

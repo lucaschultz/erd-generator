@@ -1,6 +1,6 @@
 {
   "name": "@lucaschultz/erd-generator",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Generate a D2 ERD from a SQLite or libSQL database",
   "repository": {
     "type": "git",
