@@ -67,13 +67,11 @@ export async function executeQuery<
 ): Promise<ResultRecord<TType['infer']>[]> {
   const result = await client.execute(query)
 
-  const validationResult = validate(result.toJSON())
+  const validated = validate(result.toJSON())
 
-  if (validationResult instanceof ArkErrors) {
-    throw new Error('Error validating libSQL query result', {
-      cause: validationResult,
-    })
+  if (validated instanceof ArkErrors) {
+    return validated.throw()
   }
 
-  return resultToRecords(validationResult)
+  return resultToRecords(validated)
 }
