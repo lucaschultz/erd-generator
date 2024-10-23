@@ -1,18 +1,20 @@
 import { createClient } from '@libsql/client'
 import { buildCommand } from '@stricli/core'
-import { writeFile } from 'fs/promises'
 
 import type { AppContext } from '../app-context.js'
 
 import { generateD2FromLibsql } from '../../internal/generate-d2-from-libsql.js'
 import { LibSqlUri, parseLibSqlUri } from '../parsers/parse-libsql-uri.js'
 import { parseOutputArg } from '../parsers/parse-output-arg.js'
+import { assertValidOutput } from '../utils/assert-valid-output.js'
+import { communicateDiagram } from '../utils/communicate-diagram.js'
 
 interface LibSqlCommandFlags {
   readonly authToken?: string
+  readonly diagramFormat: 'd2'
   readonly encryptionKey?: string
   readonly excludeTable?: string[]
-  readonly format: 'd2'
+  readonly force: boolean
   readonly generatedTables: boolean
   readonly output?: string
 }
@@ -22,6 +24,8 @@ async function runLibSqlCommand(
   flags: LibSqlCommandFlags,
   url: LibSqlUri,
 ): Promise<void> {
+  await assertValidOutput(flags)
+
   const client = createClient({
     authToken: flags.authToken,
     encryptionKey: flags.encryptionKey,
@@ -33,12 +37,7 @@ async function runLibSqlCommand(
     includeDefaultExcludedTables: flags.generatedTables,
   })
 
-  if (flags.output) {
-    await writeFile(flags.output, diagram)
-    this.process.stdout.write(`D2 diagram written to "${flags.output}"`)
-  } else {
-    this.process.stdout.write(diagram)
-  }
+  await communicateDiagram(diagram, flags)
 }
 
 export const LibSqlCommand = buildCommand({
@@ -54,8 +53,9 @@ export const LibSqlCommand = buildCommand({
   parameters: {
     aliases: {
       a: 'authToken',
+      d: 'diagramFormat',
       e: 'excludeTable',
-      f: 'format',
+      f: 'force',
       g: 'generatedTables',
       k: 'encryptionKey',
       o: 'output',
@@ -67,6 +67,13 @@ export const LibSqlCommand = buildCommand({
         optional: true,
         parse: String,
         placeholder: 'token',
+      },
+      diagramFormat: {
+        brief: 'Format of the diagram',
+        default: 'd2',
+        kind: 'enum',
+        placeholder: 'format',
+        values: ['d2'],
       },
       encryptionKey: {
         brief: 'Key to decrypt an encrypted local database',
@@ -82,12 +89,10 @@ export const LibSqlCommand = buildCommand({
         parse: String,
         variadic: true,
       },
-      format: {
-        brief: 'Format of the diagram',
-        default: 'd2',
-        kind: 'enum',
-        placeholder: 'format',
-        values: ['d2'],
+      force: {
+        brief: 'If output file exists, overwrite it',
+        default: false,
+        kind: 'boolean',
       },
       generatedTables: {
         brief: "Include generated tables (e.g. migration tables from ORM's)",

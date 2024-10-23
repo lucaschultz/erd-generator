@@ -1,5 +1,4 @@
 import { buildCommand } from '@stricli/core'
-import { writeFile } from 'fs/promises'
 import pg from 'pg'
 
 import type { AppContext } from '../app-context.js'
@@ -7,10 +6,13 @@ import type { AppContext } from '../app-context.js'
 import { generateD2FromPostgres } from '../../internal/generate-d2-from-postgres.js'
 import { parseOutputArg } from '../parsers/parse-output-arg.js'
 import { parsePostgresUri } from '../parsers/parse-postgres-uri.js'
+import { assertValidOutput } from '../utils/assert-valid-output.js'
+import { communicateDiagram } from '../utils/communicate-diagram.js'
 
 interface PostgresCommandFlags {
+  readonly diagramFormat: 'd2'
   readonly excludeTable?: string[]
-  readonly format: 'd2'
+  readonly force: boolean
   readonly generatedTables: boolean
   readonly output?: string
 }
@@ -20,6 +22,8 @@ async function runLibSqlCommand(
   flags: PostgresCommandFlags,
   url: URL,
 ): Promise<void> {
+  await assertValidOutput(flags)
+
   const client = new pg.Client(url.toString())
 
   await client.connect()
@@ -31,12 +35,7 @@ async function runLibSqlCommand(
 
   await client.end()
 
-  if (flags.output) {
-    await writeFile(flags.output, diagram)
-    this.process.stdout.write(`D2 diagram written to "${flags.output}"`)
-  } else {
-    this.process.stdout.write(diagram)
-  }
+  await communicateDiagram(diagram, flags)
 }
 
 export const PostgresCommand = buildCommand({
@@ -44,18 +43,26 @@ export const PostgresCommand = buildCommand({
     brief: 'Generate an ERD from a PostgreSQL database',
     customUsage: [
       '-o diagram.d2 postgres://user:password@localhost:5432/mydb',
-      '-f d2 postgres://postgres@localhost:5432/postgres',
+      '-d d2 postgres://postgres@localhost:5432/postgres',
     ],
   },
   func: runLibSqlCommand,
   parameters: {
     aliases: {
+      d: 'diagramFormat',
       e: 'excludeTable',
-      f: 'format',
+      f: 'force',
       g: 'generatedTables',
       o: 'output',
     },
     flags: {
+      diagramFormat: {
+        brief: 'Format of the diagram',
+        default: 'd2',
+        kind: 'enum',
+        placeholder: 'format',
+        values: ['d2'],
+      },
       excludeTable: {
         brief: 'Tables to exclude from the diagram',
         kind: 'parsed',
@@ -63,12 +70,10 @@ export const PostgresCommand = buildCommand({
         parse: String,
         variadic: true,
       },
-      format: {
-        brief: 'Format of the diagram',
-        default: 'd2',
-        kind: 'enum',
-        placeholder: 'format',
-        values: ['d2'],
+      force: {
+        brief: 'If output file exists, overwrite it',
+        default: false,
+        kind: 'boolean',
       },
       generatedTables: {
         brief: "Include generated tables (e.g. migration tables from ORM's)",

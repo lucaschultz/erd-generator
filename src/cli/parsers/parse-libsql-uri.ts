@@ -1,4 +1,4 @@
-import { checkIfFileExists } from './parse-output-arg.js'
+import { checkIfFileExists } from '../utils/check-if-file-exists.js'
 
 type RemoteLibSqlUri = `libsql://${string}`
 
